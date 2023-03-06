@@ -1,0 +1,25 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.navbar{
+    width: auto;
+    /* height: 500px; */
+
+}
+
+.navbar-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    background-color: var(--containerColor);
+    color: var( --textColor);
+}
+
+.navbar-title h1{
+    margin: 0px;
+    padding: 0px;
+}
