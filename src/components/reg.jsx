@@ -1,47 +1,21 @@
+
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
-
 
 function Reg() {
 
-    const history = useNavigate();
+    const histroy = useNavigate();
 
-    const[data, setData] = useState([])
+    const[date, setDate] = useState([])
 
     const [details, setDetails] = useState({
       name: "",
       email: "",
       password: "",  
     })
-
-    console.log(details);
     
-    const handleChange = (e) => {
-        const { value, name } = e.target;
 
-        setDetails(() =>{
-          return {
-            ...details,
-            [name]: value
-          }
-        })
-    }
-
-    const handleClick = (e) => {
-        const {username, email, password} = details;
-
-        if (username && email && password === ""){
-          toast.error('name field is requred!');
-        }else{
-          console.log("data added succesfully");
-          history("/Login")
-          localStorage.setItem("Users",JSON.stringify([...data,details]));
-        }
-        e.preventDefault();
-
-    }
 
 
   return (
@@ -49,17 +23,18 @@ function Reg() {
     <form>  
         <div className="container">   
             <label>Your Name : </label>   
-            <input type="text" placeholder="Enter Name" onChange={handleChange} name="name" value={details.name} required/> 
+            <input type="text" placeholder="Enter Email" name="username" required/> 
 
             <label>Email: </label>   
-            <input type="email" placeholder="Enter Email" onChange={handleChange} name="email" value={details.email} required/> 
+            <input type="email" placeholder="Enter Username" name="email" required/> 
 
             <label>Password : </label>   
-            <input type="password" placeholder="Enter Password" onChange={handleChange} name="password" value={details.password} required/>  
+            <input type="password" placeholder="Enter Password" name="password" required/>  
             
-            <button type="submit" onClick={handleClick}>Login</button>  
+            <button type="submit">Login</button>  
         </div>   
      </form>  
+      
     </div>
   )
 }
