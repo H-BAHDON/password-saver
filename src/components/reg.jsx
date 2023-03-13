@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -26,7 +27,7 @@ function Reg() {
   return (
     <div>
     <form>  
-        <div class="container">   
+        <div className="container">   
             <label>Your Name : </label>   
             <input type="text" placeholder="Enter Email" name="username" required/> 
 
@@ -37,7 +38,6 @@ function Reg() {
             <input type="password" placeholder="Enter Password" name="password" required/>  
             
             <button type="submit">Login</button>  
-            <p className='mt-3'>Already Have an Account <span><NavLink to="/login">SignIn</NavLink></span> </p> 
         </div>   
      </form>  
       

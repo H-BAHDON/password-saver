@@ -7,7 +7,7 @@ function Login() {
   return (
     <div className="login-container">
       <form>  
-        <div class="container">   
+        <div className="container">   
             <label>Email : </label>   
             <input type="email" placeholder="Enter Email" name="email" required/> 
 
