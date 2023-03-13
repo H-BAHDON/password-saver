@@ -13,6 +13,12 @@ function Reg() {
       email: "",
       password: "",  
     })
+
+    const getDate = (e) => {
+        const {value}
+    }
+
+
     
 
 
