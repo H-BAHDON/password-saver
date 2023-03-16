@@ -1,39 +1,88 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 
-function Reg() {
+export default function Registration() {
+  const [usernameReg, setUsernameReg] = useState("");
+  const [passwordReg, setPasswordReg] = useState("");
 
-    const histroy = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    const[date, setDate] = useState([])
+  const [loginStatus, setLoginStatus] = useState("");
 
-    const [details, setDetails] = useState({
-      name: "",
-      email: "",
-      password: "",  
-    })
+  Axios.defaults.withCredentials = true;
+
+  const register = () => {
+    Axios.post("http://localhost:3001/register", {
+      username: usernameReg,
+      password: passwordReg,
+    }).then((response) => {
+      console.log(response);
+    });
+  };
+
+  const login = () => {
+    Axios.post("http://localhost:3001/login", {
+      username: username,
+      password: password,
+    }).then((response) => {
+      if (response.data.message) {
+        setLoginStatus(response.data.message);
+      } else {
+        setLoginStatus(response.data[0].username);
+      }
+    });
+  };
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      if (response.data.loggedIn == true) {
+        setLoginStatus(response.data.user[0].username);
+      }
+    });
+  }, []);
 
   return (
-    <div>
-    <form>  
-        <div class="container">   
-            <label>Your Name : </label>   
-            <input type="text" placeholder="Enter Email" name="username" required/> 
+    <div className="App">
+      <div className="registration">
+        <h1>Registration</h1>
+        <label>Username</label>
+        <input
+          type="text"
+          onChange={(e) => {
+            setUsernameReg(e.target.value);
+          }}
+        />
+        <label>Password</label>
+        <input
+          type="text"
+          onChange={(e) => {
+            setPasswordReg(e.target.value);
+          }}
+        />
+        <button onClick={register}> Register </button>
+      </div>
 
-            <label>Email: </label>   
-            <input type="email" placeholder="Enter Username" name="email" required/> 
+      <div className="login">
+        <h1>Login</h1>
+        <input
+          type="text"
+          placeholder="Username..."
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
+        <input
+          type="password"
+          placeholder="Password..."
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <button onClick={login}> Login </button>
+      </div>
 
-            <label>Password : </label>   
-            <input type="password" placeholder="Enter Password" name="password" required/>  
-            
-            <button type="submit">Login</button>  
-            <p className='mt-3'>Already Have an Account <span><NavLink to="/login">SignIn</NavLink></span> </p> 
-        </div>   
-     </form>  
-      
+      <h1>{loginStatus}</h1>
     </div>
-  )
+  );
 }
-
-export default Reg
