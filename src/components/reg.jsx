@@ -21,18 +21,13 @@ export default function Registration() {
     });
   };
 
-  const login = () => {
-    Axios.post("http://localhost:3001/login", {
-      username: username,
-      password: password,
-    }).then((response) => {
-      if (response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-        setLoginStatus(response.data[0].username);
-      }
-    });
-  };
+        setDetails(() =>{
+          return {
+            ...details,
+            [name]: value
+          }
+        })
+    }
 
   useEffect(() => {
     Axios.get("http://localhost:3001/login").then((response) => {
@@ -43,46 +38,21 @@ export default function Registration() {
   }, []);
 
   return (
-    <div className="App">
-      <div className="registration">
-        <h1>Registration</h1>
-        <label>Username</label>
-        <input
-          type="text"
-          onChange={(e) => {
-            setUsernameReg(e.target.value);
-          }}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          onChange={(e) => {
-            setPasswordReg(e.target.value);
-          }}
-        />
-        <button onClick={register}> Register </button>
-      </div>
+    <div>
+    <form>  
+        <div className="container">   
+            <label>Your Name : </label>   
+            <input type="text" placeholder="Enter Name" onChange={handleChange} name="name" value={details.name} required/> 
 
-      <div className="login">
-        <h1>Login</h1>
-        <input
-          type="text"
-          placeholder="Username..."
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Password..."
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-        <button onClick={login}> Login </button>
-      </div>
+            <label>Email: </label>   
+            <input type="email" placeholder="Enter Email" onChange={handleChange} name="email" value={details.email} required/> 
 
-      <h1>{loginStatus}</h1>
+            <label>Password : </label>   
+            <input type="password" placeholder="Enter Password" onChange={handleChange} name="password" value={details.password} required/>  
+            
+            <button type="submit" onClick={handleClick}>Login</button>  
+        </div>   
+     </form>  
     </div>
   );
 }
