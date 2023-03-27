@@ -1,24 +1,52 @@
-import React from 'react'
+import React, {useState} from "react";
+import Axios from "axios";
 
+export default function Login() {
+  const [loginUser, setLoginUser] = useState({
+    email: "",
+    password: "",
+  });
 
-// import "../styles/login"
+  const login = () => {
+    Axios.post("http://localhost:4001/login", {
+      email: loginUser.email,
+      password: loginUser.password,
+    }).then((response) => {
+      console.log(response);
+    });
+  };
 
-function Login() {
+  const handleChange = (event) => {
+    setLoginUser({
+      ...loginUser,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
-    <div className="login-container">
-      <form>  
-        <div className="container">   
-            <label>Email : </label>   
-            <input type="email" placeholder="Enter Email" name="email" required/> 
+    <div id="login">
+      <h2>Login</h2>
+      <form>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          onChange={handleChange}
+          required
+        />
 
-            <label>Password : </label>   
-            <input type="password" placeholder="Enter Password" name="password" required/>  
-            
-            <button type="submit">Login</button>   
-        </div>   
-     </form>   
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          onChange={handleChange}
+          required
+        />
+
+        <input type="submit" onClick={login} value="Login" />
+      </form>
     </div>
-  )
+  );
 }
-
-export default Login

@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import Axios from "axios";
 
+import Login from "./Login"
+
 export default function Registration() {
   const {registrationUser, setRegistrationUser} = useState({
     firstName: "",
@@ -9,7 +11,7 @@ export default function Registration() {
     password: "",
   });
 
-  Axios.defaults.withCredentials = true;
+  // Axios.ddefaults.withCredentials = true;
 
   const register = () => {
     Axios.post("http://localhost:4001/register", {
@@ -71,6 +73,8 @@ export default function Registration() {
 
         <input type="submit" onClick={register} value="Register" />
       </form>
+
+      <Login/>
     </div>
   );
 }
