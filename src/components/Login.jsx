@@ -1,10 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import React, {useState} from "react";
 import axios from "axios";
+import { useAtom } from 'jotai';
+import { authAtom } from '../config/state';
 
 export default function Login() {
 
   const navigate = useNavigate()
+  const [auth, setAuth] = useAtom(authAtom)
+
   const [loginUser, setLoginUser] = useState({
     email: "",
     password: "",
@@ -16,8 +20,8 @@ export default function Login() {
       email: loginUser.email,
       password: loginUser.password,
     }).then((response) => {
-      console.log(response);
-      navigate('/Create')
+      setAuth(response.data)
+      // navigate('/Create')
     });
   };
 

@@ -30,10 +30,6 @@ app.use(morgan("dev"))
 
 const loginRoute = require('./routes/login');
 
-// app.get('/', (req, res) => {
-//   res.send('hello world!')
-// })
-
 registerRoute(app)
 loginRoute(app)
 

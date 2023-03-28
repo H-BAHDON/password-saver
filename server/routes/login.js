@@ -1,7 +1,12 @@
 const bcrypt = require("bcrypt");
 const db = require("../database/db");
+const {sessionMiddleware} = require("../auth/authMiddleware")
+
 
 function loginRoute(app) {
+
+  app.use(sessionMiddleware); // use session middleware here
+
   app.post("/login", (req, res) => {
     const { email, password } = req.body;
 
@@ -27,7 +32,11 @@ function loginRoute(app) {
                 firstName: result.rows[0].firstname,
                 lastName: result.rows[0].lastname // fixed typo here
               };
-              res.sendStatus(200);
+              res.status(200).json({
+                email: result.rows[0].email,
+                firstName: result.rows[0].firstname,
+                lastName: result.rows[0].lastname // fixed typo here
+              })
             } else {
               res.sendStatus(401);
             }

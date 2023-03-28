@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import axios from "axios";
@@ -7,10 +6,14 @@ import Header from "./components/header";
 import Reg from "./components/reg";
 import Create from "./pages/Create";
 import Container from "./components/Container";
+import { authAtom } from "./config/state";
+import { useAtom } from "jotai";
 
 function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [auth, setAuth] = useAtom(authAtom)
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     axios.get("http://localhost:3000").then((response) => {
@@ -21,23 +24,25 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    // check if user is logged in
+    fetch("http://localhost:3000/login", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.loggedIn) {
+          setLoggedIn(true);
+          setUser(data.user);
+        }
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   function handleLogin() {
     setLoggedIn(true);
     navigate("/Create");
-  }
-
-  function handleLogout() {
-    // send a post request to logout the user
-    fetch("http://localhost:3000/logout", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then(() => {
-        // update the loggedIn state and navigate to the home page
-        setLoggedIn(false);
-        navigate("/");
-      })
-      .catch((error) => console.error(error));
   }
 
   const [credentials, setCredentials] = useState([]);
@@ -56,26 +61,44 @@ function App() {
     });
   }
 
+  useEffect(() => {
+    if(auth?.email){
+      setLoggedIn(true)
+      navigate('/Create')
+    }else{
+      setLoggedIn(false)
+      navigate('/')
+    }
+  }, [auth])
+
+
   return (
     <div>
-      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <Header loggedIn={loggedIn} user={user} setLoggedIn={setLoggedIn} />
       <Routes>
         <Route path="/" element={<Reg onLogin={handleLogin} />} />
         <Route
           path="/Create"
           element={<Create onAdd={addCredentials} />}
         />
-        {credentials.map((element, index) => {
-          return (
-            <Container
-              key={index}
-              id={index}
-              email={element.email}
-              password={element.password}
-              onDelete={deleteCredential}
-            />
-          );
-        })}
+        {loggedIn &&
+          credentials.map((element, index) => {
+            return (
+              <Route
+                key={index}
+                path={`/Container/${index}`}
+                element={
+                  <Container
+                    key={index}
+                    id={index}
+                    email={element.email}
+                    password={element.password}
+                    onDelete={deleteCredential}
+                  />
+                }
+              />
+            );
+          })}
       </Routes>
     </div>
   );
