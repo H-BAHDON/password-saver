@@ -8,10 +8,7 @@ const db = new Pool({
   port: 5432,
 });
 
-db.connect((err, client, release) => {
-  if (err) {
-    return console.error("Error acquiring client", err.stack);
-  }
+db.on("connect", () => {
   console.log("Connected to database");
 });
 

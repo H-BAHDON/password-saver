@@ -1,26 +1,35 @@
 const bcrypt = require("bcrypt");
-const db = require("../db");
+const db = require("../database/db");
 
 function loginRoute(app) {
   app.post("/login", (req, res) => {
     const { email, password } = req.body;
 
     db.query(
-      "SELECT * FROM users WHERE email = ?;",
-      email,
+      "SELECT * FROM users WHERE email = $1",
+      [email],
       (err, result) => {
         if (err) {
-          res.send({ err: err });
+          return res.status(500).json({ error: "Internal server error" });
         }
+        console.log('Result:', result);
 
-        if (result.length > 0) {
-          bcrypt.compare(password, result[0].password, (error, response) => {
-            if (response) {
-              req.session.user = result;
-              console.log(req.session.user);
-              res.send(result);
+        if (result?.rowCount > 0) { // check the rowCount property of the result object
+          bcrypt.compare(password, result.rows[0].password, function(err, passwordMatch) {
+            if (err) {
+              console.log(err);
+              res.sendStatus(500);
+              return;
+            }
+            if (passwordMatch) { // use the passwordMatch variable instead of result to avoid confusion
+              req.session.user = {
+                email: result.rows[0].email,
+                firstName: result.rows[0].firstname,
+                lastName: result.rows[0].lastname // fixed typo here
+              };
+              res.sendStatus(200);
             } else {
-              res.send({ message: "Wrong email/password combination!" });
+              res.sendStatus(401);
             }
           });
         } else {

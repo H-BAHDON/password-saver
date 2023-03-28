@@ -4,7 +4,9 @@ import Axios from "axios";
 import Login from "./Login"
 
 export default function Registration() {
-  const {registrationUser, setRegistrationUser} = useState({
+
+
+  const [registrationUser, setRegistrationUser] = useState({
     firstName: "",
     secondName: "",
     email: "",
@@ -13,7 +15,7 @@ export default function Registration() {
 
   // Axios.ddefaults.withCredentials = true;
 
-  const register = () => {
+  const register = (e) => {
     Axios.post("http://localhost:4001/register", {
       firstName: registrationUser.firstName,
       secondName: registrationUser.secondName,
@@ -21,7 +23,7 @@ export default function Registration() {
       password: registrationUser.password,
     }).then((response) => {
       console.log(response);
-    });
+    })
   };
 
   const handleChange = (event) => {
@@ -30,6 +32,8 @@ export default function Registration() {
       [event.target.name]: event.target.value,
     });
   };
+
+
 
   return (
     <div id="registration">
@@ -75,6 +79,7 @@ export default function Registration() {
       </form>
 
       <Login/>
+
     </div>
   );
 }

@@ -19,7 +19,7 @@ function registerRoute(app) {
       }
 
       db.query(
-        "INSERT INTO users (firstName, secondName, email, password) VALUES (?,?,?,?)",
+        "INSERT INTO users (firstName, secondName, email, password) VALUES ($1, $2, $3, $4)",
         [firstName, secondName, email, hash],
         (err, result) => {
           if (err) {

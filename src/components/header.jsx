@@ -1,17 +1,32 @@
-import React from 'react'
-import "../styles/header.css"
+// Header.js
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function header() {
-    return (
+function Header(props) {
+  const navigate = useNavigate();
 
-        <div className="navbar">
-            <div className="navbar-title">
-                <h1>
-                    Password Saver
-                </h1>
-            </div>
+  function handleLogout() {
+    // send a post request to logout the user
+    fetch("http://localhost:3000/logout", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(() => {
+        // update the loggedIn state and navigate to the home page
+        props.setLoggedIn(false);
+        navigate("/");
+      })
+      .catch((error) => console.error(error));
+  }
 
-        </div>
-
-    )
+  return (
+    <div>
+      <h1>Header</h1>
+      {props.loggedIn && (
+        <button onClick={handleLogout}>Logout</button>
+      )}
+    </div>
+  );
 }
+
+export default Header;
