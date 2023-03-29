@@ -1,7 +1,5 @@
 const db = require("../database/db"); 
 const bcrypt = require("bcrypt");
-const { sessionMiddleware } = require("../auth/authMiddleware");
-
 const saltRounds = 10;
 
 function registerRoute(app) {

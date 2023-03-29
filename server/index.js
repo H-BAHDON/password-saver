@@ -1,29 +1,46 @@
-
 // ----------------------------------------
-    const express = require("express");
-    const morgan = require("morgan")
-    const cors = require("cors")
-    const bodyParser = require("body-parser");
-    const cookieParser = require("cookie-parser");
-    const registerRoute = require('./routes/register')
+const express = require("express");
+const morgan = require("morgan")
+const cors = require("cors")
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const registerRoute = require('./routes/register')
+const session = require("express-session");
 
 // ----------------------------------------
 // ---------------------------------------- 
 //        Importing Middleware from auth folder
-const { sessionMiddleware } = require("./auth/authMiddleware");
-  //  leaving a note to add the build folder from src that you 
-  // will create into the server folder: well done Hussein Bahdon
+
+// 
 
 const app = express();
 
 //----------------------------------------
-    //  cookie & bodyParser
+//  cookie & bodyParser
+
+//----------------------------------------
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-//----------------------------------------
-app.use(cors())
+app.use(
+  session({
+    key: "userId",
+    secret: "cyf",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
+
 app.use(express.json());
-app.use(sessionMiddleware);
 
 app.use(morgan("dev"))
 //----------------------------------------
@@ -35,6 +52,5 @@ loginRoute(app)
 
 //----------------------------------------
 app.listen(4001, () => {
-  console.log("running server");
+console.log("running server");
 });
-

@@ -18,6 +18,7 @@ function App() {
   useEffect(() => {
     axios.get("http://localhost:3000").then((response) => {
       if (response.data.loggedIn) {
+        console.log(response.data.loggedIn)
         setLoggedIn(true);
         navigate("/Create");
       }
@@ -71,6 +72,7 @@ function App() {
     }
   }, [auth])
 
+ 
 
   return (
     <div>

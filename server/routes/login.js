@@ -27,15 +27,12 @@ function loginRoute(app) {
               return;
             }
             if (passwordMatch) { // use the passwordMatch variable instead of result to avoid confusion
-              req.session.user = {
-                email: result.rows[0].email,
-                firstName: result.rows[0].firstname,
-                lastName: result.rows[0].lastname // fixed typo here
-              };
+              req.session.user = result;
+              console.log()
               res.status(200).json({
                 email: result.rows[0].email,
                 firstName: result.rows[0].firstname,
-                lastName: result.rows[0].lastname // fixed typo here
+                lastName: result.rows[0].lastname 
               })
             } else {
               res.sendStatus(401);

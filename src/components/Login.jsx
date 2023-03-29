@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import { useAtom } from 'jotai';
 import { authAtom } from '../config/state';
+import "../styles/register.css"
 
 export default function Login() {
 
@@ -14,12 +15,18 @@ export default function Login() {
     password: "",
   });
 
+  axios.defaults.withCredentials = true;
+
+
   const hanldeLogin = (e) => {
     e.preventDefault()
     axios.post("http://localhost:4001/login", {
       email: loginUser.email,
       password: loginUser.password,
     }).then((response) => {
+         if (response.data.loggedIn == true) {
+        setAuth(response.data.user[0].email);
+      }
       setAuth(response.data)
       // navigate('/Create')
     });
@@ -30,12 +37,13 @@ export default function Login() {
       ...loginUser,
       [event.target.name]: event.target.value,
     });
+    
   };
 
   return (
-    <div id="login">
+    <div className="login-container">
       <h2>Login</h2>
-      <form onSubmit={hanldeLogin} >
+      <form className="login-form-container" onSubmit={hanldeLogin} >
         <label htmlFor="email">Email:</label>
         <input
           type="email"

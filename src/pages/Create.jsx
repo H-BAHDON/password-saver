@@ -1,16 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
+
+import "../styles/create.css"
 
 function Create(props) {
     const [credentials, setCredentials] = useState({email: "", password: ""});
     const [data, setData] = useState([])
+  
 
     function handleChange(event) {
         const {name, value} = event.target;
-        setCredentials({ ...credentials, [name] : value });
+        setCredentials({
+            ...credentials,
+            [name]: value
+        });
     }
-
     function submitCredentials(event) {
-        event.preventDefault();
+        event.preventDefault(); 
         props.onAdd(credentials);
 
         const uniqueId = Date.now() + '-' + Math.floor(Math.random() * 1000000);
@@ -20,26 +26,30 @@ function Create(props) {
                 _id: uniqueId
             }
         ])
-
         setCredentials({email: "", password: ""});
     }
+    const handleDelete = (id) => {
+        setData(data.filter((e) => e._id != id))
+    }
 
-
-    const hadnleDelete = (id) => {
-      setData(data.filter((e) => e._id != id))
-    } 
-
-    console.log(data)
+ 
+    // axios.defaults.withCredentials = true;
+    // useEffect(() => {
+    //   axios.get("http://localhost:3001/login").then((response) => {
+    //     if (response.data.loggedIn == true) {
+    //         setAuth(response.data.user[0].auth?.email);
+    //     }
+    //   });
+    // }, []);
+  
 
     return (
-        <div>
+        <div className="create-container">
             <h1>Create Credential</h1>
             <form>
                 <label>Email:</label>
                 <input type="email" name="email"
-                    value={
-                        credentials.email
-                    }
+                    value={credentials.email}
                     onChange={handleChange}/>
                 <br/>
                 <label>Password:</label>
@@ -62,15 +72,18 @@ function Create(props) {
                 }
             }>
                 {
-                data?.map((e, i) => (
-                    <div className="container" key={i} >
+                data ?. map((e, i) => (
+                    <div className="container"
+                        key={i}>
                         <h1>{
-                            e?.email
+                            e ?. email
                         }</h1>
                         <p>{
-                          e?.password
+                            e ?. password
                         }</p>
-                        <button onClick={() => hadnleDelete(e?._id)} >DELETE</button>
+                        <button onClick={
+                            () => handleDelete(e ?. _id)
+                        }>DELETE</button>
                     </div>
                 ))
             } </div>

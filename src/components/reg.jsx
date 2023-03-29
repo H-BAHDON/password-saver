@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import Axios from "axios";
-
+import axios from "axios";
+import { useAtom } from 'jotai';
+import { authAtom } from '../config/state';
 import Login from "./Login"
 
 export default function Registration() {
@@ -13,16 +14,20 @@ export default function Registration() {
     password: "",
   });
 
-  // Axios.ddefaults.withCredentials = true;
+  const [auth, setAuth] = useAtom(authAtom)
+
+
+  axios.defaults.withCredentials = true;
 
   const register = (e) => {
-    Axios.post("http://localhost:4001/register", {
+    axios.post("http://localhost:4001/register", {
       firstName: registrationUser.firstName,
       secondName: registrationUser.secondName,
       email: registrationUser.email,
       password: registrationUser.password,
     }).then((response) => {
       console.log(response);
+      setAuth(response.data)
     })
   };
 
@@ -36,8 +41,9 @@ export default function Registration() {
 
 
   return (
-    <div id="registration">
+    <div className="registration-container" id="registration">
       <h2>Registration</h2>
+      <div className="registration-form-container">
       <form>
         <label htmlFor="firstName">First Name:</label>
         <input
@@ -77,8 +83,12 @@ export default function Registration() {
 
         <input type="submit" onClick={register} value="Register" />
       </form>
-
+      </div>
+      <div className="registration-login-container">
+        <div className="registration-divider"></div>
+        <div className="registration-login-text">Already have an account?</div>
       <Login/>
+      </div>
 
     </div>
   );
