@@ -42,6 +42,15 @@ function Create(props) {
     //   });
     // }, []);
     
+       // axios.defaults.withCredentials = true;
+    // useEffect(() => {
+    //   axios.get("http://localhost:3001/login").then((response) => {
+    //     if (response.data.loggedIn == true) {
+    //         setAuth(response.data.user[0].auth?.email);
+    //     }
+    //   });
+    // }, []);
+    
 
     
   
