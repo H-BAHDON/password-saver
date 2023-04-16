@@ -62,15 +62,15 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    if(auth?.email){
-      setLoggedIn(true)
-      navigate('/Create')
-    }else{
-      setLoggedIn(false)
-      navigate('/')
-    }
-  }, [auth])
+  // useEffect(() => {
+  //   if(auth?.email){
+  //     setLoggedIn(true)
+  //     navigate('/Create')
+  //   }else{
+  //     setLoggedIn(false)
+  //     navigate('/')
+  //   }
+  // }, [auth])
 
  
 
